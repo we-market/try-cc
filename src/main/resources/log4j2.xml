@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" monitorInterval="60">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}(%F:%L) - %m%n" />
+		</Console>
+
+		<RollingFile name="fixedTimeFileAppender"
+			fileName="${sys:log.home}/try-cc.log"
+			filePattern="${sys:log.home}/try-cc.log.%d{yyyy-MM-dd_HH}.log">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}(%F:%L) - %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="200 MB" />
+			</Policies>
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<AsyncLogger name="cn.wemarket.cc" level="info"
+			additivity="false" includeLocation="true">
+			<AppenderRef ref="fixedTimeFileAppender" />
+		</AsyncLogger>
+		
+		<AsyncLogger name="org.springframework" level="info"
+			additivity="false" includeLocation="true">
+			<AppenderRef ref="fixedTimeFileAppender" />
+		</AsyncLogger>
+		
+		<AsyncLogger name="com.alibaba.druid" level="info"
+			additivity="false" includeLocation="true">
+			<AppenderRef ref="fixedTimeFileAppender" />
+		</AsyncLogger>
+
+		<Root level="info" includeLocation="true">
+			<AppenderRef ref="fixedTimeFileAppender" />
+		</Root>
+	</Loggers>
+</Configuration>

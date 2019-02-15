@@ -1,0 +1,55 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.1.2.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.wemarket'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.0'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile 'org.apache.commons:commons-lang3:3.0'
+	compile 'com.github.jsqlparser:jsqlparser:0.9.7'
+	compile 'com.alibaba:druid-spring-boot-starter:1.1.10'
+}
+
+bootRun {
+	jvmArgs = [
+			"-server",
+			"-Xmx512m",
+			"-XX:MetaspaceSize=64m",
+			"-XX:MaxMetaspaceSize=128m",
+			"-Xdebug=true",
+			"-Dspring.devtools.restart.enabled=false",  //不使用springboot restart功能
+			"-Dspring.config.location=classpath:application.properties", //指定spring boot 配置文件
+			"-Dmumble.server.web-environment=true", //是否启用web容器，如果需要启用，设置为true;如果需要关闭，设置为false
+			"-Duser.language=zh",
+			"-Dlog.home=./dist/logs"  //指定日志目录
+	]
+}

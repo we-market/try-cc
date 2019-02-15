@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.webank.mumble.ucsportal.integration.dao.SystemsDAO">
+	<resultMap id="result" type="cn.webank.mumble.ucsportal.common.dto.SystemsDTO">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="system_id" jdbcType="VARCHAR" property="systemId" />
+	</resultMap>
+
+	<select id="list" parameterType="java.util.Map" resultMap="result">
+		SELECT * FROM systems_info
+		<trim prefix="WHERE" suffixOverrides=" AND | OR">
+			<if test="id != null and id != ''">
+				id = #{id} AND
+			</if>
+			<if test="name != null and name != ''">
+				name like "%"#{name}"%" AND
+			</if>
+			<if test="systemId != null and systemId !=''">
+				system_id = #{systemId} AND
+			</if>
+		</trim>
+		ORDER BY id ASC
+	</select>
+
+</mapper>

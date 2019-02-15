@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.webank.mumble.ucsportal.integration.dao.SystemDAO">
+	<resultMap id="result" type="cn.webank.mumble.ucsportal.common.dto.SystemDTO">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="state" jdbcType="INTEGER" property="state" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="system_id" jdbcType="VARCHAR" property="systemId" />
+		<result column="can_close" jdbcType="INTEGER" property="canClose" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="ctime" jdbcType="VARCHAR" property="ctime" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
+		<result column="show_menu" jdbcType="INTEGER" property="showMenu" />
+	</resultMap>
+
+	<select id="list" parameterType="java.util.Map" resultMap="result">
+		SELECT * FROM system_info
+		<trim prefix="WHERE" suffixOverrides=" AND | OR">
+			<if test="id !=null and user != ''">
+				id = #{id} AND
+			</if>
+			<if test="state !=null and state !='' and state >= 0">
+				state = #{state} AND
+			</if>
+			<if test="name != null and name != ''">
+				name like "%"#{name}"%" AND
+			</if>
+			<if test="systemId != null and systemId !=''">
+				system_id = #{systemId} AND
+			</if>
+			<if test="canClose != null and canClose !='' and canClose >= 0">
+				can_close = #{canClose} AND
+			</if>
+			<if test="showMenu != null and showMenu !='' and showMenu >= 0">
+				show_menu = #{showMenu} AND
+			</if>
+		</trim>
+		ORDER BY sort 
+	</select>
+	
+	<insert id="add" parameterType="cn.webank.mumble.ucsportal.common.dto.SystemDTO">
+		INSERT INTO
+		system_info(id,state,name,system_id,can_close,url,ctime,sort,show_menu)
+		VALUES(#{id},#{state},#{name},#{systemId},#{canClose},#{url},#{ctime},#{sort},#{showMenu});
+	</insert>
+
+	<update id="update" parameterType="cn.webank.mumble.ucsportal.common.dto.SystemDTO">
+		UPDATE system_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="newid != null and newid != ''">
+				id = #{newid},
+			</if>
+			<if test="state >= 0">
+				state = #{state},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="systemId != null">
+				system_id = #{systemId},
+			</if>
+			<if test="canClose != null">
+				can_close = #{canClose},
+			</if>
+			<if test="url != null">
+				url = #{url},
+			</if>
+			<if test="ctime != null and ctime != ''">
+				ctime = #{ctime},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+			<if test="showMenu != null">
+				show_menu = #{showMenu},
+			</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+</mapper>

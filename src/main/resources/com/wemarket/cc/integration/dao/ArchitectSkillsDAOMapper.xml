@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.webank.mumble.ucsportal.integration.dao.ArchitectSkillsDAO">
+    <resultMap id="result" type="cn.webank.mumble.ucsportal.common.dto.ArchitectSkillsDTO">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="skills_id" jdbcType="INTEGER" property="skillsId" />
+        <result column="ctime" jdbcType="VARCHAR" property="ctime" />
+        <result column="mtime" jdbcType="VARCHAR" property="mtime" />
+        <result column="architect_id" jdbcType="INTEGER" property="architectId" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
+    </resultMap>
+
+    <select id="list" parameterType="java.util.Map" resultMap="result">
+        SELECT * FROM skills_architect
+        <trim prefix="WHERE" suffixOverrides=" AND | OR">
+            <if test="id != null and id > 0">
+                id = #{id} AND
+            </if>
+            <if test="state != null and state !='' and state >= 0">
+                state = #{state} AND
+            </if>
+            <if test="skillsId != null and skillsId > 0">
+                skills_id = #{skillsId} AND
+            </if>
+            <if test="architectId != null and architectId > 0">
+                architect_id = #{architectId} AND
+            </if>
+        </trim>
+    </select>
+
+    <insert id="add" parameterType="cn.webank.mumble.ucsportal.common.dto.ArchitectSkillsDTO">
+		INSERT INTO
+		skills_architect(state,skills_id,ctime,mtime,architect_id,create_user,modify_user)
+		VALUES(#{state},#{skillsId},#{ctime},#{mtime},#{architectId},#{createUser},#{modifyUser});
+	</insert>
+
+    <delete id="delete" parameterType="cn.webank.mumble.ucsportal.common.dto.ArchitectSkillsDTO">
+        delete from skills_architect
+        where skills_id = #{skillsId}
+    </delete>
+
+    <update id="update" parameterType="cn.webank.mumble.ucsportal.common.dto.ArchitectSkillsDTO">
+        UPDATE skills_architect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id > 0">
+                id = #{id},
+            </if>
+            <if test="state >= 0">
+                state = #{state},
+            </if>
+            <if test="skillsId != null and skillsId > 0">
+                skills_id = #{skillsId},
+            </if>
+            <if test="architectId != null and architectId > 0">
+                architect_id = #{architectId},
+            </if>
+            <if test="ctime != null and ctime != ''">
+                ctime = #{ctime},
+            </if>
+            <if test="mtime != null and mtime != ''">
+                mtime = #{mtime},
+            </if>
+            <if test="createUser != null and createUser != ''">
+                create_user = #{createUser},
+            </if>
+            <if test="modifyUser != null and modifyUser != ''">
+                modify_user = #{modifyUser},
+            </if>
+        </trim>
+        WHERE skills_id = #{skillsId} and architect_id = #{architectId}
+    </update>
+</mapper>
